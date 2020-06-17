@@ -3,12 +3,12 @@ const route = express.Router();
 const table = require("../db").import("../module/student");
 const advisor = require("../db").import("../module/advisor");
 const classes = require("../db").import("../module/class");
+const StuValidate = require("../header/studentValidation");
 
-
-
-
+//route.use(StuValidate);  test this. or route.get("/info",StuValidate,(req,res)=> to validate
 //getting all the info aka - homepage for student
-route.get("/info",(req,res)=>{
+route.use(StuValidate);
+route.get("/info",StuValidate,(req,res)=>{
     table.findAll({
         where:{
             owner_id: req.user.id

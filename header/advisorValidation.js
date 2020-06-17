@@ -1,8 +1,8 @@
 let jwt = require("jsonwebtoken");
 let User = require("../db").import("../module/advisorUser");
 
-module.exports = (req,res,next)=>{
-    if(req.method == "OPTION"){
+const validateSession = (req,res,next)=>{
+    if(req.method == "OPTIONS"){
         next();
     }
     else{
@@ -13,12 +13,12 @@ module.exports = (req,res,next)=>{
         if(!sessionToken){
             return res.status(401).send({
                 auth: false,
-                message: "No token has been provided"
+                message: "No token has provided"
             })
         }
         else{
             jwt.verify(sessionToken,process.env.SIGN,(err,decoded)=>{
-                if(decoded){
+                if(!err && decoded){
                     User.findOne({
                         where:{
                             id: decoded.id
@@ -26,7 +26,7 @@ module.exports = (req,res,next)=>{
                     })
                     .then(user=>{
                         req.user = user
-                        next();
+                        return next();
                     },err=>res.send(500,err.message))
                 }
                 else{
@@ -36,3 +36,5 @@ module.exports = (req,res,next)=>{
         }
     }
 }
+
+module.exports = validateSession;

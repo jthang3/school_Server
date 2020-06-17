@@ -1,8 +1,7 @@
 let jwt = require("jsonwebtoken");
 let User = require("../db").import("../module/studentUser");
-
 module.exports = (req,res,next)=>{
-    if(req.method == "OPTION"){
+    if(req.method == "OPTIONS"){
         next();
     }
     else{
@@ -34,5 +33,6 @@ module.exports = (req,res,next)=>{
                 }
             })
         }
+        
     }
 }
