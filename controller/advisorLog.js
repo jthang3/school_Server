@@ -7,7 +7,7 @@ const AdvValidate = require("../header/advisorValidation");
 
 route.use(AdvValidate);
 //posting new advisor
-route.post("/advisor",(req,res)=>{
+route.post("/advisor",AdvValidate,(req,res)=>{
     data = {
         FirstName: req.body.user.first,
         LastName: req.body.user.last,
